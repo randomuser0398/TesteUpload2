@@ -1,0 +1,3 @@
+git add .
+git commit -m "Fase 1 finalizada — MVP funcional do caça-níquel"
+git push origin main
