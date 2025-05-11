@@ -44,3 +44,18 @@
 .wallet-form button:hover {
     background-color: #3D9970;
 }
+nav {
+    background-color: #0074D9;
+    padding: 10px;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
