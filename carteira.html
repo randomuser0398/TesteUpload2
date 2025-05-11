@@ -1,49 +1,34 @@
+<!-- carteira.html -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carteira - Cassino do Capitão</title>
+    <title>Carteira do Capitão</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container wallet-container">
-        <header>
-            <div class="logo">
-                <h1>Cassino do Capitão</h1>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="jogo.html">Jogo</a></li>
-                </ul>
-            </nav>
-        </header>
-        
-        <main class="wallet-content">
-            <div class="balance-card">
-                <h2>Carteira Digital</h2>
-                <div class="balance-display">
-                    <h3>Saldo Atual</h3>
-                    <p class="balance">R$ <span id="walletBalance">1000.00</span></p>
-                </div>
+    <div class="container">
+        <h1>Carteira do Capitão</h1>
+
+        <div id="wallet-balance">Saldo: R$ 0,00</div>
+
+        <div class="wallet-actions">
+            <h2>Gerenciar Saldo</h2>
+
+            <div class="wallet-form">
+                <input type="number" id="deposit-amount" placeholder="Valor para depositar (R$)" min="1">
+                <button id="deposit-btn">Depositar</button>
             </div>
 
-            <div id="depositArea" class="transaction-area">
-                <h3>Depositar via Pix</h3>
-                <div class="pix-container">
-                    <div class="pix-qrcode">
-                        <div class="placeholder-qrcode">
-                            <div class="qr-frame">
-                                <div class="qr-inner"></div>
-                            </div>
-                        </div>
-                        <p>QR Code Pix</p>
-                    </div>
-                    
-                    <div class="transaction-form">
-                        <div class="form-group">
-                            <label for=
+            <div class="wallet-form">
+                <input type="number" id="withdraw-amount" placeholder="Valor para sacar (R$)" min="1">
+                <button id="withdraw-btn">Sacar</button>
+            </div>
+        </div>
+
+        <a href="index.html"><button>Voltar ao Jogo</button></a>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
