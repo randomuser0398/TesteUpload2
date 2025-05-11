@@ -1,119 +1,61 @@
 // Script para o site Cassino do Capitão
 document.addEventListener('DOMContentLoaded', function() {
     // Variáveis globais
-    let userBalance = 100; // Saldo inicial em R$
-    
-    // Atualiza o saldo em todas as páginas que o exibem
-    updateBalance();
-    
-    // Handlers específicos para cada página
-    setupHomePage();
-    setupGamePage();
-    setupWalletPage();
-});
+    const symbols = ['🍒', '⭐️', '💎']; // Símbolos do caça-níquel
+    const custoPorGiro = 10.00;         // Valor fixo por giro
+    const saldoInicial = 100.00;        // Saldo inicial
+    let saldo = recuperarSaldo();       // Recupera ou inicializa saldo
 
-/**
- * Atualiza o saldo do usuário em todos os elementos que o exibem
- */
-function updateBalance() {
-    // Recupera o saldo do localStorage (ou usa o valor padrão se não existir)
-    const storedBalance = localStorage.getItem('userBalance');
-    const userBalance = storedBalance ? parseFloat(storedBalance) : 100;
-    
-    // Atualiza os elementos de saldo em todas as páginas
-    const balanceElements = document.querySelectorAll('#user-balance, #wallet-balance');
-    balanceElements.forEach(element => {
-        if (element) {
-            element.textContent = `R$ ${userBalance.toFixed(2)}`;
-        }
-    });
-}
+    // Elementos comuns
+    const slots = document.querySelectorAll('.slot');
+    const saldoElemento = document.getElementById('saldo');
+    const girarBtn = document.getElementById('girar-btn');
 
-/**
- * Configura eventos e funcionalidades da página inicial
- */
-function setupHomePage() {
-    // Código específico para a página Home (se necessário)
-}
+    // Atualiza o saldo ao carregar
+    atualizarSaldo();
 
-/**
- * Configura eventos e funcionalidades da página de jogo
- */
-function setupGamePage() {
-    const spinButton = document.getElementById('spin-button');
-    const resultMessage = document.getElementById('result-message');
-    const betInput = document.getElementById('bet');
-    
-    // Símbolos disponíveis no caça-níquel
-    const symbols = ['🍒', '🍋', '🍊', '🍇', '7️⃣', '💎', '🎰'];
-    
-    if (spinButton) {
-        spinButton.addEventListener('click', function() {
-            // Recupera o saldo atual
-            const storedBalance = localStorage.getItem('userBalance');
-            let userBalance = storedBalance ? parseFloat(storedBalance) : 100;
-            
-            // Obtém o valor da aposta
-            const betAmount = parseInt(betInput.value);
-            
-            // Verifica se o usuário tem saldo suficiente
-            if (betAmount > userBalance) {
-                resultMessage.textContent = 'Saldo insuficiente! Faça um depósito.';
-                resultMessage.style.color = 'var(--color-red)';
-                return;
-            }
-            
-            // Desconta o valor da aposta
-            userBalance -= betAmount;
-            
-            // Anima os rolos (simplificado para demonstração)
-            animateReels().then(results => {
-                // Verifica o resultado do jogo
-                const winAmount = calculateWin(results, betAmount);
-                
-                // Atualiza o saldo com possíveis ganhos
-                userBalance += winAmount;
-                
-                // Armazena o novo saldo
-                localStorage.setItem('userBalance', userBalance);
-                
-                // Atualiza a exibição do saldo
-                updateBalance();
-                
-                // Exibe mensagem de resultado
-                if (winAmount > 0) {
-                    resultMessage.textContent = `Você ganhou R$ ${winAmount.toFixed(2)}!`;
-                    resultMessage.style.color = 'var(--color-win)';
-                } else {
-                    resultMessage.textContent = 'Tente novamente!';
-                    resultMessage.style.color = 'var(--color-text)';
-                }
-            });
-        });
+    // Evento de clique no botão GIRAR (se existir na página)
+    if (girarBtn) {
+        girarBtn.addEventListener('click', girarSlots);
     }
-    
+
     /**
-     * Anima os rolos do caça-níquel (simulação simples)
-     * @returns {Promise} Promise com o resultado dos rolos
+     * Recupera o saldo do localStorage ou define saldo inicial
+     * @returns {number} saldo atual
      */
-    function animateReels() {
-        return new Promise(resolve => {
-            const reel1 = document.getElementById('reel1');
-            const reel2 = document.getElementById('reel2');
-            const reel3 = document.getElementById('reel3');
-            
-            if (!reel1 || !reel2 || !reel3) return;
-            
-            // Desabilita o botão durante a animação
-            if (spinButton) spinButton.disabled = true;
-            
-            // Simula a animação trocando os símbolos rapidamente
-            let counter = 0;
-            const maxIterations = 20; // Total de iterações da animação
-            const results = [];
-            
-            const animationInterval = setInterval(() => {
-                // Gera símbolos aleatórios para cada rolo
-                const symbol1 = symbols[Math.floor(Math.random() * symbols.length)];
-                const symbol2 = symbols[Math.floor(Math.random() * symbols.length)];
-                const symbol3 = symbols[Math.
+    function recuperarSaldo() {
+        const storedBalance = localStorage.getItem('userBalance');
+        return storedBalance ? parseFloat(storedBalance) : saldoInicial;
+    }
+
+    /**
+     * Atualiza o saldo no elemento da página e salva no localStorage
+     */
+    function atualizarSaldo() {
+        if (saldoElemento) {
+            saldoElemento.textContent = `Saldo: R$ ${saldo.toFixed(2)}`;
+        }
+        localStorage.setItem('userBalance', saldo);
+    }
+
+    /**
+     * Função para girar os slots
+     */
+    function girarSlots() {
+        if (saldo < custoPorGiro) {
+            alert('Saldo insuficiente! Recarregue para continuar.');
+            return;
+        }
+
+        saldo -= custoPorGiro;
+        atualizarSaldo();
+
+        // Sorteia novos símbolos para cada slot
+        slots.forEach(slot => {
+            const simboloAleatorio = symbols[Math.floor(Math.random() * symbols.length)];
+            slot.textContent = simboloAleatorio;
+        });
+
+        // Em breve: lógica de prêmio!
+    }
+});
