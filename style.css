@@ -59,3 +59,13 @@ nav a {
 nav a:hover {
     text-decoration: underline;
 }
+.rules-list {
+    text-align: left;
+    display: inline-block;
+    margin-top: 20px;
+    text-align: left;
+}
+
+.rules-list li {
+    margin-bottom: 10px;
+}
