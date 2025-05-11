@@ -69,3 +69,17 @@ nav a:hover {
 .rules-list li {
     margin-bottom: 10px;
 }
+nav {
+    margin-bottom: 20px;
+}
+
+nav a {
+    color: #7FDBFF;
+    text-decoration: none;
+    margin: 0 10px;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
