@@ -37,23 +37,52 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Função de girar os slots
-    function girarSlots() {
-        let saldoAtual = getSaldo();
+  function girarSlots() {
+    let saldoAtual = getSaldo();
 
-        if (saldoAtual < custoPorGiro) {
-            alert('Saldo insuficiente! Recarregue para continuar.');
-            return;
-        }
-
-        saldoAtual -= custoPorGiro;
-        setSaldo(saldoAtual);
-
-        slots.forEach(slot => {
-            const simboloAleatorio = simbolos[Math.floor(Math.random() * simbolos.length)];
-            slot.textContent = simboloAleatorio;
-        });
+    if (saldoAtual < custoPorGiro) {
+        alert('Saldo insuficiente! Recarregue para continuar.');
+        return;
     }
+
+    saldoAtual -= custoPorGiro;
+
+    // Sorteia os símbolos
+    const resultados = [];
+    slots.forEach(slot => {
+        const simboloAleatorio = simbolos[Math.floor(Math.random() * simbolos.length)];
+        slot.textContent = simboloAleatorio;
+        resultados.push(simboloAleatorio);
+    });
+
+    // Verifica se houve prêmio
+    const premio = calcularPremio(resultados, custoPorGiro);
+    saldoAtual += premio;
+
+    setSaldo(saldoAtual);
+
+    if (premio > 0) {
+        alert(`Parabéns! Você ganhou R$ ${premio.toFixed(2)}!`);
+    } else {
+        alert('Tente novamente!');
+    }
+}
+
+// Função para calcular prêmio
+function calcularPremio(resultados, aposta) {
+    // Se os 3 símbolos forem iguais, paga 5x o valor da aposta
+    if (resultados[0] === resultados[1] && resultados[1] === resultados[2]) {
+        return aposta * 5;
+    }
+
+    // Se 2 símbolos forem iguais, paga 2x a aposta
+    if (resultados[0] === resultados[1] || resultados[1] === resultados[2] || resultados[0] === resultados[2]) {
+        return aposta * 2;
+    }
+
+    // Caso contrário, nada
+    return 0;
+}
 
     // Função de depósito
     function depositar() {
