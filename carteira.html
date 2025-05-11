@@ -1,4 +1,3 @@
-<!-- carteira.html -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -7,30 +6,23 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<nav>
-    <a href="index.html">Cassino</a> |
-    <a href="carteira.html">Carteira</a>
-</nav>
     <div class="container">
         <h1>Carteira do Capitão</h1>
 
         <div id="wallet-balance">Saldo: R$ 0,00</div>
 
-        <div class="wallet-actions">
-            <h2>Gerenciar Saldo</h2>
+        <input type="number" id="amount-input" placeholder="Valor (R$)" min="1" step="1">
 
-            <div class="wallet-form">
-                <input type="number" id="deposit-amount" placeholder="Valor para depositar (R$)" min="1">
-                <button id="deposit-btn">Depositar</button>
-            </div>
-
-            <div class="wallet-form">
-                <input type="number" id="withdraw-amount" placeholder="Valor para sacar (R$)" min="1">
-                <button id="withdraw-btn">Sacar</button>
-            </div>
+        <div class="wallet-buttons">
+            <button id="deposit-btn">Depositar</button>
+            <button id="withdraw-btn">Sacar</button>
         </div>
 
-        <a href="index.html"><button>Voltar ao Jogo</button></a>
+        <p id="wallet-message"></p>
+
+        <a href="index.html">
+            <button>Voltar ao Cassino</button>
+        </a>
     </div>
 
     <script src="script.js"></script>
