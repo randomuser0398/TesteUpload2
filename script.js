@@ -51,11 +51,47 @@ document.addEventListener('DOMContentLoaded', function() {
         atualizarSaldo();
 
         // Sorteia novos símbolos para cada slot
+        const resultados = [];
         slots.forEach(slot => {
             const simboloAleatorio = symbols[Math.floor(Math.random() * symbols.length)];
             slot.textContent = simboloAleatorio;
+            resultados.push(simboloAleatorio);
         });
 
-        // Em breve: lógica de prêmio!
+        // Verifica o resultado e calcula o prêmio
+        const premio = calcularPremio(resultados);
+
+        if (premio > 0) {
+            saldo += premio;
+            atualizarSaldo();
+            alert(`Parabéns! Você ganhou R$ ${premio.toFixed(2)}!`);
+        } else {
+            alert('Tente novamente!');
+        }
+    }
+
+    /**
+     * Calcula o valor do prêmio com base nos resultados dos slots
+     * @param {Array} resultados - símbolos sorteados
+     * @returns {number} valor do prêmio
+     */
+    function calcularPremio(resultados) {
+        const counts = {};
+
+        // Conta quantas vezes cada símbolo apareceu
+        resultados.forEach(simbolo => {
+            counts[simbolo] = (counts[simbolo] || 0) + 1;
+        });
+
+        // Verifica combinação
+        for (let simbolo in counts) {
+            if (counts[simbolo] === 3) {
+                return 50.00; // 3 iguais → R$50
+            } else if (counts[simbolo] === 2) {
+                return 20.00; // 2 iguais → R$20
+            }
+        }
+
+        return 0; // Sem combinação
     }
 });
