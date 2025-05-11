@@ -1,4 +1,4 @@
-// Script do Cassino do Capitão — Fase 3.1: Carteira corrigida
+// Script do Cassino do Capitão — Fase 3.2: Aposta configurável e prêmio corrigido
 document.addEventListener('DOMContentLoaded', function() {
 
     const slots = document.querySelectorAll('.slot');
@@ -10,7 +10,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const withdrawInput = document.getElementById('withdraw-amount');
     const walletMessage = document.getElementById('wallet-message');
 
-    const custoPorGiro = 10.00;
+    const betInput = document.getElementById('bet-amount');  // NOVO input de aposta
+
     const simbolos = ['🍒', '⭐️', '💎'];
 
     // Inicializa saldo no localStorage se não existir
@@ -37,52 +38,58 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-  function girarSlots() {
-    let saldoAtual = getSaldo();
+    function girarSlots() {
+        const aposta = parseFloat(betInput.value);
 
-    if (saldoAtual < custoPorGiro) {
-        alert('Saldo insuficiente! Recarregue para continuar.');
-        return;
+        if (isNaN(aposta) || aposta <= 0) {
+            alert('Informe um valor válido para a aposta.');
+            return;
+        }
+
+        let saldoAtual = getSaldo();
+
+        if (saldoAtual < aposta) {
+            alert('Saldo insuficiente para essa aposta!');
+            return;
+        }
+
+        saldoAtual -= aposta;
+
+        // Sorteia os símbolos
+        const resultados = [];
+        slots.forEach(slot => {
+            const simboloAleatorio = simbolos[Math.floor(Math.random() * simbolos.length)];
+            slot.textContent = simboloAleatorio;
+            resultados.push(simboloAleatorio);
+        });
+
+        // Verifica se houve prêmio
+        const premio = calcularPremio(resultados, aposta);
+        saldoAtual += premio;
+
+        setSaldo(saldoAtual);
+
+        if (premio > 0) {
+            alert(`Parabéns! Você ganhou R$ ${premio.toFixed(2)}!`);
+        } else {
+            alert('Tente novamente!');
+        }
     }
 
-    saldoAtual -= custoPorGiro;
+    // Função para calcular prêmio
+    function calcularPremio(resultados, aposta) {
+        // Se os 3 símbolos forem iguais, paga 5x a aposta
+        if (resultados[0] === resultados[1] && resultados[1] === resultados[2]) {
+            return aposta * 5;
+        }
 
-    // Sorteia os símbolos
-    const resultados = [];
-    slots.forEach(slot => {
-        const simboloAleatorio = simbolos[Math.floor(Math.random() * simbolos.length)];
-        slot.textContent = simboloAleatorio;
-        resultados.push(simboloAleatorio);
-    });
+        // Se 2 símbolos forem iguais, paga 2x a aposta
+        if (resultados[0] === resultados[1] || resultados[1] === resultados[2] || resultados[0] === resultados[2]) {
+            return aposta * 2;
+        }
 
-    // Verifica se houve prêmio
-    const premio = calcularPremio(resultados, custoPorGiro);
-    saldoAtual += premio;
-
-    setSaldo(saldoAtual);
-
-    if (premio > 0) {
-        alert(`Parabéns! Você ganhou R$ ${premio.toFixed(2)}!`);
-    } else {
-        alert('Tente novamente!');
+        return 0;
     }
-}
-
-// Função para calcular prêmio
-function calcularPremio(resultados, aposta) {
-    // Se os 3 símbolos forem iguais, paga 5x o valor da aposta
-    if (resultados[0] === resultados[1] && resultados[1] === resultados[2]) {
-        return aposta * 5;
-    }
-
-    // Se 2 símbolos forem iguais, paga 2x a aposta
-    if (resultados[0] === resultados[1] || resultados[1] === resultados[2] || resultados[0] === resultados[2]) {
-        return aposta * 2;
-    }
-
-    // Caso contrário, nada
-    return 0;
-}
 
     // Função de depósito
     function depositar() {
