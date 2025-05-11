@@ -8,27 +8,24 @@
 <body>
     <div class="container">
         <h1>Carteira do Capitão</h1>
-<nav>
-    <a href="index.html">Cassino</a> |
-    <a href="carteira.html">Carteira</a> |
-    <a href="regras.html">Regras</a>
-</nav>
-        <div id="wallet-balance">Saldo: R$ 0,00</div>
+        <nav>
+            <a href="index.html">Cassino</a> |
+            <a href="carteira.html">Carteira</a> |
+            <a href="regras.html">Regras</a>
+        </nav>
 
-        <input type="number" id="amount-input" placeholder="Valor (R$)" min="1" step="1">
+        <div id="wallet-balance">Saldo: R$ 100,00</div>
 
-        <div class="wallet-buttons">
-            <button id="deposit-btn">Depositar</button>
-            <button id="withdraw-btn">Sacar</button>
-        </div>
+        <h2>Depósito</h2>
+        <input type="number" id="deposit-amount" placeholder="Valor a depositar">
+        <button id="deposit-btn">Depositar</button>
+
+        <h2>Saque</h2>
+        <input type="number" id="withdraw-amount" placeholder="Valor a sacar">
+        <button id="withdraw-btn">Sacar</button>
 
         <p id="wallet-message"></p>
-
-        <a href="index.html">
-            <button>Voltar ao Cassino</button>
-        </a>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
