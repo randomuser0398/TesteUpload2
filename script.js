@@ -56,3 +56,48 @@ document.addEventListener('DOMContentLoaded', function() {
     girarBtn.addEventListener('click', girarSlots);
     atualizarSaldo();
 });
+// Funções para a página da carteira
+function setupWalletPage() {
+    const depositBtn = document.getElementById('deposit-btn');
+    const withdrawBtn = document.getElementById('withdraw-btn');
+    const depositInput = document.getElementById('deposit-amount');
+    const withdrawInput = document.getElementById('withdraw-amount');
+
+    if (depositBtn && depositInput) {
+        depositBtn.addEventListener('click', function() {
+            const amount = parseFloat(depositInput.value);
+            if (isNaN(amount) || amount <= 0) {
+                alert('Digite um valor válido para depositar.');
+                return;
+            }
+
+            let saldo = parseFloat(localStorage.getItem('userBalance')) || 100;
+            saldo += amount;
+            localStorage.setItem('userBalance', saldo);
+            updateBalance();
+            depositInput.value = '';
+        });
+    }
+
+    if (withdrawBtn && withdrawInput) {
+        withdrawBtn.addEventListener('click', function() {
+            const amount = parseFloat(withdrawInput.value);
+            let saldo = parseFloat(localStorage.getItem('userBalance')) || 100;
+
+            if (isNaN(amount) || amount <= 0) {
+                alert('Digite um valor válido para sacar.');
+                return;
+            }
+
+            if (amount > saldo) {
+                alert('Saldo insuficiente para sacar esse valor.');
+                return;
+            }
+
+            saldo -= amount;
+            localStorage.setItem('userBalance', saldo);
+            updateBalance();
+            withdrawInput.value = '';
+        });
+    }
+                      }
