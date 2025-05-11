@@ -1,53 +1,53 @@
-// Script do Cassino do Capitão — Fase 3: Carteira
+// Script do Cassino do Capitão — Fase 3.1: Carteira corrigida
 document.addEventListener('DOMContentLoaded', function() {
-    // Variáveis
-    let saldo = recuperarSaldo();
-    atualizarSaldo();
 
-    // Elementos do jogo
     const slots = document.querySelectorAll('.slot');
     const girarBtn = document.getElementById('girar-btn');
 
-    // Elementos da carteira
     const depositBtn = document.getElementById('deposit-btn');
     const withdrawBtn = document.getElementById('withdraw-btn');
     const depositInput = document.getElementById('deposit-amount');
     const withdrawInput = document.getElementById('withdraw-amount');
     const walletMessage = document.getElementById('wallet-message');
 
-    // Configurações
     const custoPorGiro = 10.00;
     const simbolos = ['🍒', '⭐️', '💎'];
 
-    // Funções de saldo
-    function recuperarSaldo() {
-        const storedBalance = localStorage.getItem('userBalance');
-        return storedBalance ? parseFloat(storedBalance) : 100.00;
+    // Inicializa saldo no localStorage se não existir
+    if (!localStorage.getItem('userBalance')) {
+        localStorage.setItem('userBalance', '100.00');
     }
 
-    function salvarSaldo() {
-        localStorage.setItem('userBalance', saldo.toFixed(2));
+    function getSaldo() {
+        return parseFloat(localStorage.getItem('userBalance'));
     }
 
-    function atualizarSaldo() {
+    function setSaldo(novoSaldo) {
+        localStorage.setItem('userBalance', novoSaldo.toFixed(2));
+        atualizarExibicaoSaldo();
+    }
+
+    function atualizarExibicaoSaldo() {
+        const saldoAtual = getSaldo();
         const saldoElementos = document.querySelectorAll('#saldo, #wallet-balance');
         saldoElementos.forEach(el => {
             if (el) {
-                el.textContent = `Saldo: R$ ${saldo.toFixed(2)}`;
+                el.textContent = `Saldo: R$ ${saldoAtual.toFixed(2)}`;
             }
         });
-        salvarSaldo();
     }
 
-    // Função de giro
+    // Função de girar os slots
     function girarSlots() {
-        if (saldo < custoPorGiro) {
+        let saldoAtual = getSaldo();
+
+        if (saldoAtual < custoPorGiro) {
             alert('Saldo insuficiente! Recarregue para continuar.');
             return;
         }
 
-        saldo -= custoPorGiro;
-        atualizarSaldo();
+        saldoAtual -= custoPorGiro;
+        setSaldo(saldoAtual);
 
         slots.forEach(slot => {
             const simboloAleatorio = simbolos[Math.floor(Math.random() * simbolos.length)];
@@ -58,13 +58,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Função de depósito
     function depositar() {
         const valor = parseFloat(depositInput.value);
+
         if (isNaN(valor) || valor <= 0) {
             exibirMensagem('Informe um valor válido para depósito.', 'red');
             return;
         }
 
-        saldo += valor;
-        atualizarSaldo();
+        const novoSaldo = getSaldo() + valor;
+        setSaldo(novoSaldo);
         depositInput.value = '';
         exibirMensagem(`Depósito de R$ ${valor.toFixed(2)} realizado com sucesso!`, 'green');
     }
@@ -72,18 +73,20 @@ document.addEventListener('DOMContentLoaded', function() {
     // Função de saque
     function sacar() {
         const valor = parseFloat(withdrawInput.value);
+
         if (isNaN(valor) || valor <= 0) {
             exibirMensagem('Informe um valor válido para saque.', 'red');
             return;
         }
 
-        if (valor > saldo) {
+        let saldoAtual = getSaldo();
+        if (valor > saldoAtual) {
             exibirMensagem('Saldo insuficiente para saque.', 'red');
             return;
         }
 
-        saldo -= valor;
-        atualizarSaldo();
+        saldoAtual -= valor;
+        setSaldo(saldoAtual);
         withdrawInput.value = '';
         exibirMensagem(`Saque de R$ ${valor.toFixed(2)} realizado com sucesso!`, 'green');
     }
@@ -100,5 +103,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (girarBtn) girarBtn.addEventListener('click', girarSlots);
     if (depositBtn) depositBtn.addEventListener('click', depositar);
     if (withdrawBtn) withdrawBtn.addEventListener('click', sacar);
+
+    // Atualiza saldo ao carregar a página
+    atualizarExibicaoSaldo();
 
 });
