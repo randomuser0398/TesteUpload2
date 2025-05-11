@@ -16,3 +16,31 @@
     margin-top: 15px;
     font-size: 1.1em;
 }
+.wallet-actions {
+    margin-top: 20px;
+}
+
+.wallet-form {
+    margin-bottom: 15px;
+}
+
+.wallet-form input {
+    padding: 8px;
+    font-size: 1em;
+    width: 200px;
+    margin-right: 5px;
+}
+
+.wallet-form button {
+    padding: 8px 15px;
+    font-size: 1em;
+    background-color: #2ECC40;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.wallet-form button:hover {
+    background-color: #3D9970;
+}
