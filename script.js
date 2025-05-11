@@ -101,3 +101,61 @@ function setupWalletPage() {
         });
     }
                       }
+// ============================
+// Funções da página Carteira
+// ============================
+
+function setupWalletPage() {
+    const depositBtn = document.getElementById('deposit-btn');
+    const withdrawBtn = document.getElementById('withdraw-btn');
+    const amountInput = document.getElementById('amount-input');
+    const walletMessage = document.getElementById('wallet-message');
+
+    if (depositBtn && withdrawBtn && amountInput) {
+        depositBtn.addEventListener('click', () => {
+            const amount = parseFloat(amountInput.value);
+            if (isNaN(amount) || amount <= 0) {
+                walletMessage.textContent = 'Insira um valor válido para depósito.';
+                walletMessage.style.color = 'var(--color-red)';
+                return;
+            }
+            const currentBalance = getStoredBalance();
+            const newBalance = currentBalance + amount;
+            localStorage.setItem('userBalance', newBalance);
+            updateBalance();
+            walletMessage.textContent = `Depósito de R$ ${amount.toFixed(2)} realizado com sucesso!`;
+            walletMessage.style.color = 'var(--color-win)';
+            amountInput.value = '';
+        });
+
+        withdrawBtn.addEventListener('click', () => {
+            const amount = parseFloat(amountInput.value);
+            const currentBalance = getStoredBalance();
+            if (isNaN(amount) || amount <= 0) {
+                walletMessage.textContent = 'Insira um valor válido para saque.';
+                walletMessage.style.color = 'var(--color-red)';
+                return;
+            }
+            if (amount > currentBalance) {
+                walletMessage.textContent = 'Saldo insuficiente para saque.';
+                walletMessage.style.color = 'var(--color-red)';
+                return;
+            }
+            const newBalance = currentBalance - amount;
+            localStorage.setItem('userBalance', newBalance);
+            updateBalance();
+            walletMessage.textContent = `Saque de R$ ${amount.toFixed(2)} realizado com sucesso!`;
+            walletMessage.style.color = 'var(--color-win)';
+            amountInput.value = '';
+        });
+    }
+}
+
+/**
+ * Recupera o saldo atual armazenado
+ * @returns {number} saldo atual
+ */
+function getStoredBalance() {
+    const storedBalance = localStorage.getItem('userBalance');
+    return storedBalance ? parseFloat(storedBalance) : 100;
+        }
