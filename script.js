@@ -1,4 +1,4 @@
-// Script do Cassino do Capitão — Fase 2.2: Aposta dinâmica
+// Script do Cassino do Capitão — Fase 3.2: Correções de aposta dinâmica
 
 document.addEventListener('DOMContentLoaded', function() {
 
@@ -11,7 +11,7 @@ const depositInput = document.getElementById('deposit-amount');
 const withdrawInput = document.getElementById('withdraw-amount');
 const walletMessage = document.getElementById('wallet-message');
 
-const betInput = document.getElementById('bet-amount');
+const apostaInput = document.getElementById('bet-amount');
 const simbolos = ['🍒', '⭐️', '💎'];
 
 // Inicializa saldo no localStorage se não existir
@@ -39,22 +39,21 @@ function atualizarExibicaoSaldo() {
 }
 
 function girarSlots() {
+    const aposta = parseFloat(apostaInput.value);
     let saldoAtual = getSaldo();
-    const valorAposta = parseFloat(betInput.value);
 
-    if (isNaN(valorAposta) || valorAposta <= 0) {
-        alert('Informe um valor de aposta válido!');
+    if (isNaN(aposta) || aposta <= 0) {
+        alert('Informe um valor válido para a aposta.');
         return;
     }
 
-    if (saldoAtual < valorAposta) {
-        alert('Saldo insuficiente para essa aposta!');
+    if (saldoAtual < aposta) {
+        alert('Saldo insuficiente! Recarregue para continuar.');
         return;
     }
 
-    saldoAtual -= valorAposta;
+    saldoAtual -= aposta;
 
-    // Sorteia os símbolos
     const resultados = [];
     slots.forEach(slot => {
         const simboloAleatorio = simbolos[Math.floor(Math.random() * simbolos.length)];
@@ -62,8 +61,7 @@ function girarSlots() {
         resultados.push(simboloAleatorio);
     });
 
-    // Verifica se houve prêmio
-    const premio = calcularPremio(resultados, valorAposta);
+    const premio = calcularPremio(resultados, aposta);
     saldoAtual += premio;
 
     setSaldo(saldoAtual);
@@ -75,12 +73,64 @@ function girarSlots() {
     }
 }
 
-// Função para calcular prêmio
 function calcularPremio(resultados, aposta) {
     if (resultados[0] === resultados[1] && resultados[1] === resultados[2]) {
         return aposta * 5;
     }
 
     if (resultados[0] === resultados[1] || resultados[1] === resultados[2] || resultados[0] === resultados[2]) {
-        return aposta *
+        return aposta * 2;
+    }
+
+    return 0;
+}
+
+function depositar() {
+    const valor = parseFloat(depositInput.value);
+
+    if (isNaN(valor) || valor <= 0) {
+        exibirMensagem('Informe um valor válido para depósito.', 'red');
+        return;
+    }
+
+    const novoSaldo = getSaldo() + valor;
+    setSaldo(novoSaldo);
+    depositInput.value = '';
+    exibirMensagem(`Depósito de R$ ${valor.toFixed(2)} realizado com sucesso!`, 'green');
+}
+
+function sacar() {
+    const valor = parseFloat(withdrawInput.value);
+
+    if (isNaN(valor) || valor <= 0) {
+        exibirMensagem('Informe um valor válido para saque.', 'red');
+        return;
+    }
+
+    let saldoAtual = getSaldo();
+    if (valor > saldoAtual) {
+        exibirMensagem('Saldo insuficiente para saque.', 'red');
+        return;
+    }
+
+    saldoAtual -= valor;
+    setSaldo(saldoAtual);
+    withdrawInput.value = '';
+    exibirMensagem(`Saque de R$ ${valor.toFixed(2)} realizado com sucesso!`, 'green');
+}
+
+function exibirMensagem(msg, cor) {
+    if (walletMessage) {
+        walletMessage.textContent = msg;
+        walletMessage.style.color = cor;
+    }
+}
+
+if (girarBtn) girarBtn.addEventListener('click', girarSlots);
+if (depositBtn) depositBtn.addEventListener('click', depositar);
+if (withdrawBtn) withdrawBtn.addEventListener('click', sacar);
+
+atualizarExibicaoSaldo();
+
+});
 
