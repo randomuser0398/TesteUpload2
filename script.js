@@ -33,11 +33,8 @@ function girarSlots() {
 function calcularPremio(resultados, aposta) {
     const [a, b, c] = resultados;
 
+    // Paga apenas se os 3 símbolos forem iguais
     if (a === b && b === c) {
-        return aposta * 5;
-    }
-
-    if (a === b || b === c || a === c) {
         return aposta * 2;
     }
 
