@@ -40,3 +40,40 @@ function calcularPremio(resultados, aposta) {
 
     return 0;
 }
+// Som de giro e vitória
+const audioGiro = new Audio('sounds/spin.mp3');
+const audioVitoria = new Audio('sounds/win.mp3');
+
+// Gira slots com som
+function girarSlots() {
+    let saldoAtual = getSaldo();
+    const aposta = parseFloat(document.getElementById('valor-aposta').value);
+
+    if (saldoAtual < aposta) {
+        alert('Saldo insuficiente! Recarregue para continuar.');
+        return;
+    }
+
+    saldoAtual -= aposta;
+    audioGiro.play(); // Som de giro
+
+    const resultados = [];
+    slots.forEach(slot => {
+        const simboloAleatorio = simbolos[Math.floor(Math.random() * simbolos.length)];
+        slot.textContent = simboloAleatorio;
+        slot.classList.remove('win-animation');
+        resultados.push(simboloAleatorio);
+    });
+
+    const premio = calcularPremio(resultados, aposta);
+    saldoAtual += premio;
+    setSaldo(saldoAtual);
+
+    if (premio > 0) {
+        audioVitoria.play(); // Som de vitória
+        slots.forEach(slot => slot.classList.add('win-animation'));
+        alert(`Parabéns! Você ganhou R$ ${premio.toFixed(2)}!`);
+    } else {
+        alert('Tente novamente!');
+    }
+}
