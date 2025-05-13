@@ -61,9 +61,7 @@ function girarSlots() {
     tocarSom(winSound);
     slots.forEach(slot => slot.classList.add('win-animation'));
     alert(`Parabéns! Você ganhou R$ ${premio.toFixed(2)}!`);
-  } else {
-    alert('Tente novamente!');
-  }
+  } 
 }
 
 // Prêmio apenas para 3 símbolos iguais
