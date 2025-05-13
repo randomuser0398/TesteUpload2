@@ -65,9 +65,8 @@ function tocarSom(audio) {
   audio.play().catch(e => console.warn('Som bloqueado pelo navegador:', e));
 }
 
-// Listener de evento
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('Dom Carregado');
+// Inicializa os eventos após DOM pronto
+window.addEventListener('DOMContentLoaded', () => {
   const girarBtn = document.getElementById('girar-btn');
   if (girarBtn) {
     girarBtn.addEventListener('click', girarSlots);
