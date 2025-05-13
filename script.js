@@ -1,110 +1,74 @@
-function girarSlots() {
-    let saldoAtual = getSaldo();
+const slots = [
+  document.getElementById('reel1'),
+  document.getElementById('reel2'),
+  document.getElementById('reel3')
+];
 
-    const aposta = parseFloat(document.getElementById('bet-amount').value) || 10;
+const simbolos = ['🍒', '⭐️', '💎', '🍋', '🔔'];
 
-    if (saldoAtual < aposta) {
-        alert('Saldo insuficiente! Recarregue para continuar.');
-        return;
-    }
-
-    saldoAtual -= aposta;
-
-    // Sorteia os símbolos
-    const resultados = [];
-    slots.forEach(slot => {
-        const simboloAleatorio = simbolos[Math.floor(Math.random() * simbolos.length)];
-        slot.textContent = simboloAleatorio;
-        resultados.push(simboloAleatorio);
-    });
-
-    const premio = calcularPremio(resultados, aposta);
-    saldoAtual += premio;
-
-    setSaldo(saldoAtual);
-
-    if (premio > 0) {
-        alert(`Parabéns! Você ganhou R$ ${premio.toFixed(2)}!`);
-    } else {
-        alert('Tente novamente!');
-    }
-}
-
-function calcularPremio(resultados, aposta) {
-    const [a, b, c] = resultados;
-
-    // Paga apenas se os 3 símbolos forem iguais
-    if (a === b && b === c) {
-        return aposta * 2;
-    }
-
-    return 0;
-}
-// Som de giro e vitória
-const audioGiro = new Audio('sounds/spin.mp3');
-const audioVitoria = new Audio('sounds/win.mp3');
-
-// Gira slots com som
-function girarSlots() {
-    let saldoAtual = getSaldo();
-    const aposta = parseFloat(document.getElementById('valor-aposta').value);
-
-    if (saldoAtual < aposta) {
-        alert('Saldo insuficiente! Recarregue para continuar.');
-        return;
-    }
-
-    saldoAtual -= aposta;
-    audioGiro.play(); // Som de giro
-
-    const resultados = [];
-    slots.forEach(slot => {
-        const simboloAleatorio = simbolos[Math.floor(Math.random() * simbolos.length)];
-        slot.textContent = simboloAleatorio;
-        slot.classList.remove('win-animation');
-        resultados.push(simboloAleatorio);
-    });
-
-    const premio = calcularPremio(resultados, aposta);
-    saldoAtual += premio;
-    setSaldo(saldoAtual);
-
-    if (premio > 0) {
-        audioVitoria.play(); // Som de vitória
-        slots.forEach(slot => slot.classList.add('win-animation'));
-        alert(`Parabéns! Você ganhou R$ ${premio.toFixed(2)}!`);
-    } else {
-        alert('Tente novamente!');
-    }
-}
-// Sons
 const spinSound = new Audio('sounds/spin.mp3');
 const winSound = new Audio('sounds/win.mp3');
 
-function tocarSom(audio) {
-    audio.currentTime = 0;
-    audio.play().catch(e => console.warn('Som bloqueado pelo navegador:', e));
+// Lê o saldo atual
+function getSaldo() {
+  const saldoText = document.getElementById('saldo').textContent;
+  return parseFloat(saldoText.replace('Saldo: R$ ', '').replace(',', '.'));
 }
 
-// Altere o início da função girarSlots() para tocar o som de spin
+// Atualiza o saldo
+function setSaldo(valor) {
+  document.getElementById('saldo').textContent = `Saldo: R$ ${valor.toFixed(2)}`;
+}
+
+// Função principal do botão GIRAR
 function girarSlots() {
-    let saldoAtual = getSaldo();
+  const aposta = parseFloat(document.getElementById('valor-aposta').value) || 10;
+  let saldoAtual = getSaldo();
 
-    if (saldoAtual < custoPorGiro) {
-        alert('Saldo insuficiente! Recarregue para continuar.');
-        return;
-    }
+  if (saldoAtual < aposta) {
+    alert('Saldo insuficiente! Recarregue para continuar.');
+    return;
+  }
 
-    // Toca som de spin
-    tocarSom(spinSound);
+  tocarSom(spinSound);
+  saldoAtual -= aposta;
 
-    saldoAtual -= custoPorGiro;
+  const resultados = [];
+  slots.forEach(slot => {
+    const simbolo = simbolos[Math.floor(Math.random() * simbolos.length)];
+    slot.textContent = simbolo;
+    slot.classList.remove('win-animation');
+    resultados.push(simbolo);
+  });
 
-    // Resto da função continua...
+  const premio = calcularPremio(resultados, aposta);
+  saldoAtual += premio;
+  setSaldo(saldoAtual);
+
+  if (premio > 0) {
+    tocarSom(winSound);
+    slots.forEach(slot => slot.classList.add('win-animation'));
+    alert(`Parabéns! Você ganhou R$ ${premio.toFixed(2)}!`);
+  } else {
+    alert('Tente novamente!');
+  }
 }
 
-// E dentro da verificação de prêmio:
-if (premio > 0) {
-    tocarSom(winSound);
-    alert(`Parabéns! Você ganhou R$ ${premio.toFixed(2)}!`);
-            }
+// Lógica de premiação: só ganha com 3 iguais
+function calcularPremio([a, b, c], aposta) {
+  return (a === b && b === c) ? aposta * 2 : 0;
+}
+
+// Reproduz som
+function tocarSom(audio) {
+  audio.currentTime = 0;
+  audio.play().catch(e => console.warn('Som bloqueado pelo navegador:', e));
+}
+
+// Listener de evento
+document.addEventListener('DOMContentLoaded', () => {
+  const girarBtn = document.getElementById('girar-btn');
+  if (girarBtn) {
+    girarBtn.addEventListener('click', girarSlots);
+  }
+});
