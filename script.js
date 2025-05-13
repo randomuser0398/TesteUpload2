@@ -12,11 +12,12 @@ const simbolos = ['🍒', '⭐️', '💎', '🍋', '🔔'];
 const spinSound = new Audio('sounds/spin.mp3');
 const winSound = new Audio('sounds/win.mp3');
 
-// SALDO
+// Recupera saldo do armazenamento local
 function getSaldo() {
   return parseFloat(localStorage.getItem('saldo')) || 0;
 }
 
+// Atualiza saldo e exibe na tela
 function setSaldo(valor) {
   localStorage.setItem('saldo', valor.toFixed(2));
   const saldoEl = document.getElementById('saldo') || document.getElementById('wallet-balance');
@@ -25,13 +26,13 @@ function setSaldo(valor) {
   }
 }
 
-// Função para tocar som
+// Toca som (com tratamento de bloqueio)
 function tocarSom(audio) {
   audio.currentTime = 0;
   audio.play().catch(e => console.warn('Som bloqueado:', e));
 }
 
-// Função principal: Girar os slots
+// Gira os slots
 function girarSlots() {
   const aposta = parseFloat(document.getElementById('valor-aposta').value) || 10;
   let saldoAtual = getSaldo();
@@ -65,15 +66,14 @@ function girarSlots() {
   }
 }
 
-// Calcula o prêmio
+// Prêmio apenas para 3 símbolos iguais
 function calcularPremio([a, b, c], aposta) {
   return (a === b && b === c) ? aposta * 2 : 0;
 }
 
-// EVENTOS DOM
+// Inicialização ao carregar a página
 document.addEventListener('DOMContentLoaded', () => {
-  // Atualiza saldo ao carregar
-  setSaldo(getSaldo());
+  setSaldo(getSaldo()); // Exibe saldo ao carregar
 
   const girarBtn = document.getElementById('girar-btn');
   if (girarBtn) girarBtn.addEventListener('click', girarSlots);
@@ -88,6 +88,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const novoSaldo = getSaldo() + valor;
         setSaldo(novoSaldo);
         showWalletMessage(`Depósito de R$ ${valor.toFixed(2)} realizado com sucesso.`);
+      } else {
+        showWalletMessage('Valor inválido para depósito.', true);
       }
     });
   }
@@ -107,10 +109,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// Exibe mensagens na carteira
+// Mostra mensagens na carteira
 function showWalletMessage(msg, erro = false) {
   const el = document.getElementById('wallet-message');
   if (el) {
     el.textContent = msg;
     el.style.color = erro ? 'red' : 'green';
   }
+}
