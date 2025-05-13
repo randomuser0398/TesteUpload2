@@ -1,38 +1,44 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <title>Caça-níquel do Capitão</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cassino do Capitão</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
-<nav>
-    <a href="index.html">Cassino</a> |
-    <a href="carteira.html">Carteira</a> |
-    <a href="regras.html">Regras</a>
-</nav>
-
-<div class="container">
+  <header>
+    <nav class="top-nav">
+      <a href="index.html">Cassino</a>
+      <a href="carteira.html">Carteira</a>
+      <a href="regras.html">Regras</a>
+    </nav>
     <h1>Cassino do Capitão</h1>
+    <div id="saldo">Saldo: R$ 0,00</div>
+  </header>
 
-    <div id="saldo">Saldo: R$ 100,00</div>
+  <main>
+    <section class="aposta-container">
+      <label for="valor-aposta">Valor da aposta:</label>
+      <input type="number" id="valor-aposta" min="1" max="100" value="10" />
+    </section>
 
-    <div class="aposta-container">
-        <label for="bet-amount">Valor da aposta (R$):</label>
-        <input type="number" id="bet-amount" min="1" step="1" value="10">
-    </div>
+    <section class="slot-grid">
+      <div class="slot" id="reel1">🍒</div>
+      <div class="slot" id="reel2">⭐️</div>
+      <div class="slot" id="reel3">💎</div>
+    </section>
 
-    <div class="slot-grid">
-        <div class="slot" id="reel1">🍒</div>
-        <div class="slot" id="reel2">⭐️</div>
-        <div class="slot" id="reel3">💎</div>
-    </div>
+    <section class="acoes">
+      <button id="girar-btn">GIRAR</button>
+      <div id="mensagem-resultado"></div>
+    </section>
+  </main>
 
-    <button id="girar-btn">GIRAR</button>
-    <div id="mensagem-resultado"></div>
-</div>
+  <footer>
+    <p>&copy; 2025 Cassino do Capitão</p>
+  </footer>
 
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
-</html>
+    </html>
