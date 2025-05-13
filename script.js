@@ -72,3 +72,45 @@ window.addEventListener('DOMContentLoaded', () => {
     girarBtn.addEventListener('click', girarSlots);
   }
 });
+// Funções utilitárias
+function getSaldo() {
+  return parseFloat(localStorage.getItem('saldo')) || 0;
+}
+
+function setSaldo(valor) {
+  localStorage.setItem('saldo', valor.toFixed(2));
+}
+
+// Atualiza o saldo na carteira
+function atualizarSaldoCarteira() {
+  const saldo = getSaldo();
+  document.getElementById('wallet-balance').textContent = `Saldo: R$ ${saldo.toFixed(2)}`;
+}
+
+// Mensagem
+function mostrarMensagem(msg, isErro = false) {
+  const div = document.getElementById('wallet-message');
+  div.textContent = msg;
+  div.style.color = isErro ? 'red' : 'green';
+}
+
+// Eventos após o carregamento
+document.addEventListener('DOMContentLoaded', () => {
+  atualizarSaldoCarteira();
+
+  document.getElementById('deposit-btn').addEventListener('click', () => {
+    const valor = parseFloat(document.getElementById('deposit-amount').value);
+    if (valor > 0) {
+      const novoSaldo = getSaldo() + valor;
+      setSaldo(novoSaldo);
+      atualizarSaldoCarteira();
+      mostrarMensagem(`Depósito de R$ ${valor.toFixed(2)} realizado.`);
+    } else {
+      mostrarMensagem('Digite um valor válido para depósito.', true);
+    }
+  });
+
+  document.getElementById('withdraw-btn').addEventListener('click', () => {
+    const valor = parseFloat(document.getElementById('withdraw-amount').value);
+    const saldoAtual = getSaldo();
+    if (valor > 0 && valor <=
