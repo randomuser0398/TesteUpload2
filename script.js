@@ -1,36 +1,43 @@
+// Seletores de slots
 const slots = [
   document.getElementById('reel1'),
   document.getElementById('reel2'),
   document.getElementById('reel3')
 ];
 
+// Símbolos do caça-níquel
 const simbolos = ['🍒', '⭐️', '💎', '🍋', '🔔'];
 
+// Sons
 const spinSound = new Audio('sounds/spin.mp3');
 const winSound = new Audio('sounds/win.mp3');
 
-// Lê o saldo atual (usado no Cassino)
+// SALDO
 function getSaldo() {
-  return parseFloat(localStorage.getItem('saldo') || '0');
+  return parseFloat(localStorage.getItem('saldo')) || 0;
 }
 
-// Atualiza o saldo no index.html
 function setSaldo(valor) {
-  localStorage.setItem('saldo', valor.toString());
-  const saldoElem = document.getElementById('saldo');
-  if (saldoElem) {
-    saldoElem.textContent = `Saldo: R$ ${valor.toFixed(2)}`;
+  localStorage.setItem('saldo', valor.toFixed(2));
+  const saldoEl = document.getElementById('saldo') || document.getElementById('wallet-balance');
+  if (saldoEl) {
+    saldoEl.textContent = `Saldo: R$ ${valor.toFixed(2)}`;
   }
 }
 
-// Gira os slots
+// Função para tocar som
+function tocarSom(audio) {
+  audio.currentTime = 0;
+  audio.play().catch(e => console.warn('Som bloqueado:', e));
+}
+
+// Função principal: Girar os slots
 function girarSlots() {
-  const apostaInput = document.getElementById('valor-aposta');
-  const aposta = parseFloat(apostaInput?.value) || 10;
+  const aposta = parseFloat(document.getElementById('valor-aposta').value) || 10;
   let saldoAtual = getSaldo();
 
   if (saldoAtual < aposta) {
-    alert('Saldo insuficiente! Recarregue para continuar.');
+    alert('Saldo insuficiente! Vá à carteira para recarregar.');
     return;
   }
 
@@ -58,60 +65,52 @@ function girarSlots() {
   }
 }
 
-// Cálculo do prêmio
+// Calcula o prêmio
 function calcularPremio([a, b, c], aposta) {
   return (a === b && b === c) ? aposta * 2 : 0;
 }
 
-// Reproduz som
-function tocarSom(audio) {
-  audio.currentTime = 0;
-  audio.play().catch(e => console.warn('Som bloqueado pelo navegador:', e));
-}
-
-// Atualiza saldo na carteira.html
-function atualizarSaldoCarteira() {
-  const saldo = localStorage.getItem('saldo') || '0';
-  const walletElem = document.getElementById('wallet-balance');
-  if (walletElem) {
-    walletElem.textContent = `Saldo: R$ ${parseFloat(saldo).toFixed(2)}`;
-  }
-}
-
-// Depósito
-function depositar() {
-  const valor = parseFloat(document.getElementById('deposit-amount').value);
-  if (valor > 0) {
-    const saldoAtual = parseFloat(localStorage.getItem('saldo') || '0');
-    localStorage.setItem('saldo', (saldoAtual + valor).toString());
-    atualizarSaldoCarteira();
-  }
-}
-
-// Saque
-function sacar() {
-  const valor = parseFloat(document.getElementById('withdraw-amount').value);
-  let saldoAtual = parseFloat(localStorage.getItem('saldo') || '0');
-  if (valor > 0 && valor <= saldoAtual) {
-    saldoAtual -= valor;
-    localStorage.setItem('saldo', saldoAtual.toString());
-    atualizarSaldoCarteira();
-  }
-}
-
-// Inicialização
+// EVENTOS DOM
 document.addEventListener('DOMContentLoaded', () => {
-  // Cassino
+  // Atualiza saldo ao carregar
+  setSaldo(getSaldo());
+
   const girarBtn = document.getElementById('girar-btn');
-  if (girarBtn) {
-    girarBtn.addEventListener('click', girarSlots);
-    setSaldo(getSaldo()); // Atualiza saldo na tela
+  if (girarBtn) girarBtn.addEventListener('click', girarSlots);
+
+  const depositBtn = document.getElementById('deposit-btn');
+  const withdrawBtn = document.getElementById('withdraw-btn');
+
+  if (depositBtn) {
+    depositBtn.addEventListener('click', () => {
+      const valor = parseFloat(document.getElementById('deposit-amount').value);
+      if (valor && valor > 0) {
+        const novoSaldo = getSaldo() + valor;
+        setSaldo(novoSaldo);
+        showWalletMessage(`Depósito de R$ ${valor.toFixed(2)} realizado com sucesso.`);
+      }
+    });
   }
 
-  // Carteira
-  if (document.getElementById('deposit-btn')) {
-    document.getElementById('deposit-btn').addEventListener('click', depositar);
-    document.getElementById('withdraw-btn').addEventListener('click', sacar);
-    atualizarSaldoCarteira();
+  if (withdrawBtn) {
+    withdrawBtn.addEventListener('click', () => {
+      const valor = parseFloat(document.getElementById('withdraw-amount').value);
+      const saldoAtual = getSaldo();
+      if (valor && valor > 0 && valor <= saldoAtual) {
+        const novoSaldo = saldoAtual - valor;
+        setSaldo(novoSaldo);
+        showWalletMessage(`Saque de R$ ${valor.toFixed(2)} realizado com sucesso.`);
+      } else {
+        showWalletMessage('Valor inválido ou saldo insuficiente.', true);
+      }
+    });
   }
 });
+
+// Exibe mensagens na carteira
+function showWalletMessage(msg, erro = false) {
+  const el = document.getElementById('wallet-message');
+  if (el) {
+    el.textContent = msg;
+    el.style.color = erro ? 'red' : 'green';
+  }
