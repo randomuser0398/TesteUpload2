@@ -67,6 +67,7 @@ function tocarSom(audio) {
 
 // Listener de evento
 document.addEventListener('DOMContentLoaded', () => {
+  console.log('Dom Carregado');
   const girarBtn = document.getElementById('girar-btn');
   if (girarBtn) {
     girarBtn.addEventListener('click', girarSlots);
