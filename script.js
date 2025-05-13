@@ -9,20 +9,24 @@ const simbolos = ['🍒', '⭐️', '💎', '🍋', '🔔'];
 const spinSound = new Audio('sounds/spin.mp3');
 const winSound = new Audio('sounds/win.mp3');
 
-// Lê o saldo atual
+// Lê o saldo atual (usado no Cassino)
 function getSaldo() {
-  const saldoText = document.getElementById('saldo').textContent;
-  return parseFloat(saldoText.replace('Saldo: R$ ', '').replace(',', '.'));
+  return parseFloat(localStorage.getItem('saldo') || '0');
 }
 
-// Atualiza o saldo
+// Atualiza o saldo no index.html
 function setSaldo(valor) {
-  document.getElementById('saldo').textContent = `Saldo: R$ ${valor.toFixed(2)}`;
+  localStorage.setItem('saldo', valor.toString());
+  const saldoElem = document.getElementById('saldo');
+  if (saldoElem) {
+    saldoElem.textContent = `Saldo: R$ ${valor.toFixed(2)}`;
+  }
 }
 
-// Função principal do botão GIRAR
+// Gira os slots
 function girarSlots() {
-  const aposta = parseFloat(document.getElementById('valor-aposta').value) || 10;
+  const apostaInput = document.getElementById('valor-aposta');
+  const aposta = parseFloat(apostaInput?.value) || 10;
   let saldoAtual = getSaldo();
 
   if (saldoAtual < aposta) {
@@ -54,7 +58,7 @@ function girarSlots() {
   }
 }
 
-// Lógica de premiação: só ganha com 3 iguais
+// Cálculo do prêmio
 function calcularPremio([a, b, c], aposta) {
   return (a === b && b === c) ? aposta * 2 : 0;
 }
@@ -65,52 +69,49 @@ function tocarSom(audio) {
   audio.play().catch(e => console.warn('Som bloqueado pelo navegador:', e));
 }
 
-// Inicializa os eventos após DOM pronto
-window.addEventListener('DOMContentLoaded', () => {
+// Atualiza saldo na carteira.html
+function atualizarSaldoCarteira() {
+  const saldo = localStorage.getItem('saldo') || '0';
+  const walletElem = document.getElementById('wallet-balance');
+  if (walletElem) {
+    walletElem.textContent = `Saldo: R$ ${parseFloat(saldo).toFixed(2)}`;
+  }
+}
+
+// Depósito
+function depositar() {
+  const valor = parseFloat(document.getElementById('deposit-amount').value);
+  if (valor > 0) {
+    const saldoAtual = parseFloat(localStorage.getItem('saldo') || '0');
+    localStorage.setItem('saldo', (saldoAtual + valor).toString());
+    atualizarSaldoCarteira();
+  }
+}
+
+// Saque
+function sacar() {
+  const valor = parseFloat(document.getElementById('withdraw-amount').value);
+  let saldoAtual = parseFloat(localStorage.getItem('saldo') || '0');
+  if (valor > 0 && valor <= saldoAtual) {
+    saldoAtual -= valor;
+    localStorage.setItem('saldo', saldoAtual.toString());
+    atualizarSaldoCarteira();
+  }
+}
+
+// Inicialização
+document.addEventListener('DOMContentLoaded', () => {
+  // Cassino
   const girarBtn = document.getElementById('girar-btn');
   if (girarBtn) {
     girarBtn.addEventListener('click', girarSlots);
+    setSaldo(getSaldo()); // Atualiza saldo na tela
+  }
+
+  // Carteira
+  if (document.getElementById('deposit-btn')) {
+    document.getElementById('deposit-btn').addEventListener('click', depositar);
+    document.getElementById('withdraw-btn').addEventListener('click', sacar);
+    atualizarSaldoCarteira();
   }
 });
-// Funções utilitárias
-function getSaldo() {
-  return parseFloat(localStorage.getItem('saldo')) || 0;
-}
-
-function setSaldo(valor) {
-  localStorage.setItem('saldo', valor.toFixed(2));
-}
-
-// Atualiza o saldo na carteira
-function atualizarSaldoCarteira() {
-  const saldo = getSaldo();
-  document.getElementById('wallet-balance').textContent = `Saldo: R$ ${saldo.toFixed(2)}`;
-}
-
-// Mensagem
-function mostrarMensagem(msg, isErro = false) {
-  const div = document.getElementById('wallet-message');
-  div.textContent = msg;
-  div.style.color = isErro ? 'red' : 'green';
-}
-
-// Eventos após o carregamento
-document.addEventListener('DOMContentLoaded', () => {
-  atualizarSaldoCarteira();
-
-  document.getElementById('deposit-btn').addEventListener('click', () => {
-    const valor = parseFloat(document.getElementById('deposit-amount').value);
-    if (valor > 0) {
-      const novoSaldo = getSaldo() + valor;
-      setSaldo(novoSaldo);
-      atualizarSaldoCarteira();
-      mostrarMensagem(`Depósito de R$ ${valor.toFixed(2)} realizado.`);
-    } else {
-      mostrarMensagem('Digite um valor válido para depósito.', true);
-    }
-  });
-
-  document.getElementById('withdraw-btn').addEventListener('click', () => {
-    const valor = parseFloat(document.getElementById('withdraw-amount').value);
-    const saldoAtual = getSaldo();
-    if (valor > 0 && valor <=
