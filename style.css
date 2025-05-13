@@ -45,6 +45,7 @@ nav a:hover {
   display: flex;
   justify-content: center;
   margin: 20px 0;
+  
 }
 
 .slot {
@@ -102,4 +103,16 @@ ul {
 
 li {
   margin-bottom: 10px;
+}
+/* Animação de vitória */
+@keyframes piscar {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.win-animation {
+  animation: piscar 0.6s ease-in-out 3;
+  background-color: rgba(255, 255, 0, 0.2);
+  border: 2px solid gold;
 }
