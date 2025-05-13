@@ -1,96 +1,105 @@
+/* Reset e base */
 body {
-  font-family: 'Segoe UI', sans-serif;
   margin: 0;
-  padding: 0;
-  background: linear-gradient(to bottom, #0b132b, #1c2541);
-  color: #ffffff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #1a1f36, #2e3c67);
+  color: #fff;
+  text-align: center;
   min-height: 100vh;
 }
 
-header {
-  text-align: center;
-  padding: 1em;
-  background-color: #3a506b;
-  width: 100%;
+nav {
+  background-color: #0f172a;
+  padding: 10px;
+  font-size: 1rem;
 }
 
-.top-nav {
-  margin-bottom: 1em;
-}
-
-.top-nav a {
-  color: #f5f5f5;
-  margin: 0 15px;
+nav a {
+  color: #38bdf8;
+  margin: 0 10px;
   text-decoration: none;
-  font-weight: bold;
 }
 
-.top-nav a:hover {
-  text-decoration: underline;
+nav a:hover {
+  color: #facc15;
 }
 
-#saldo {
-  font-size: 1.2em;
-  margin-top: 0.5em;
+.container {
+  max-width: 500px;
+  margin: 40px auto;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.4);
 }
 
-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1em;
-  padding: 20px;
+/* Saldo */
+#saldo, #wallet-balance {
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+  color: #f8fafc;
 }
 
-.aposta-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
+/* Slots */
 .slot-grid {
   display: flex;
-  gap: 10px;
+  justify-content: center;
   margin: 20px 0;
 }
 
 .slot {
   font-size: 3rem;
-  background: #5bc0be;
+  margin: 0 10px;
+  background: #0f172a;
+  padding: 20px;
   border-radius: 10px;
-  padding: 1rem 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-button#girar-btn {
-  background-color: #3fc1c9;
+/* Inputs e Botões */
+input[type="number"], input[type="text"] {
+  padding: 10px;
+  margin: 10px 0;
+  width: 80%;
+  border-radius: 8px;
   border: none;
+  font-size: 1rem;
+  text-align: center;
+}
+
+button {
   padding: 10px 20px;
-  color: #fff;
+  background-color: #38bdf8;
+  border: none;
+  color: #0f172a;
   font-weight: bold;
   border-radius: 8px;
   cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background-color: #facc15;
+}
+
+/* Mensagens */
+#wallet-message, #mensagem-resultado {
+  margin-top: 15px;
   font-size: 1rem;
 }
 
-button#girar-btn:hover {
-  background-color: #2ec4b6;
+/* Regras */
+ul {
+  text-align: left;
+  margin-top: 20px;
+  padding-left: 20px;
 }
 
-#mensagem-resultado {
-  margin-top: 15px;
-  font-size: 1.1em;
-  color: #ffd700;
-}
-
-footer {
-  background-color: #3a506b;
-  color: white;
-  padding: 1em;
-  width: 100%;
-  text-align: center;
+li {
+  margin-bottom: 10px;
 }
