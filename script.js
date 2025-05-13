@@ -77,3 +77,34 @@ function girarSlots() {
         alert('Tente novamente!');
     }
 }
+// Sons
+const spinSound = new Audio('sounds/spin.mp3');
+const winSound = new Audio('sounds/win.mp3');
+
+function tocarSom(audio) {
+    audio.currentTime = 0;
+    audio.play().catch(e => console.warn('Som bloqueado pelo navegador:', e));
+}
+
+// Altere o início da função girarSlots() para tocar o som de spin
+function girarSlots() {
+    let saldoAtual = getSaldo();
+
+    if (saldoAtual < custoPorGiro) {
+        alert('Saldo insuficiente! Recarregue para continuar.');
+        return;
+    }
+
+    // Toca som de spin
+    tocarSom(spinSound);
+
+    saldoAtual -= custoPorGiro;
+
+    // Resto da função continua...
+}
+
+// E dentro da verificação de prêmio:
+if (premio > 0) {
+    tocarSom(winSound);
+    alert(`Parabéns! Você ganhou R$ ${premio.toFixed(2)}!`);
+            }
