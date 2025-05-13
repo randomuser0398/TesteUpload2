@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Carteira do Capitão</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <nav>
@@ -13,20 +13,23 @@
   </nav>
 
   <div class="container">
-    <h1>Carteira do Capitão</h1>
+    <h1>Carteira do Jogador</h1>
+
     <div id="wallet-balance">Saldo: R$ 0,00</div>
 
-    <div class="wallet-actions">
-      <input type="number" id="deposit-amount" placeholder="Valor para depósito">
+    <div class="form-group">
+      <label for="deposit-amount">Depositar valor:</label>
+      <input type="number" id="deposit-amount" min="1" step="1" placeholder="R$ 100">
       <button id="deposit-btn">Depositar</button>
     </div>
 
-    <div class="wallet-actions">
-      <input type="number" id="withdraw-amount" placeholder="Valor para saque">
+    <div class="form-group">
+      <label for="withdraw-amount">Sacar valor:</label>
+      <input type="number" id="withdraw-amount" min="1" step="1" placeholder="R$ 50">
       <button id="withdraw-btn">Sacar</button>
     </div>
 
-    <p id="wallet-message"></p>
+    <div id="wallet-message"></div>
   </div>
 
   <script src="script.js"></script>
