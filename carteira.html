@@ -2,8 +2,9 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Carteira do Capitão</title>
+  <title>Carteira Pirata</title>
   <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
   <nav>
@@ -13,20 +14,20 @@
   </nav>
 
   <div class="container">
-    <h1>Carteira do Jogador</h1>
+    <h1>Baú do Capitão</h1>
 
-    <div id="wallet-balance">Saldo: R$ 300,00</div>
+    <div id="wallet-balance">Saldo: R$ 0,00</div>
 
     <div class="form-group">
-      <label for="deposit-amount">Depositar valor:</label>
+      <label for="deposit-amount">Depositar ouro:</label><br>
       <input type="number" id="deposit-amount" min="1" step="1" placeholder="R$ 100">
-      <button id="deposit-btn">Depositar</button>
+      <br><button id="deposit-btn">Depositar</button>
     </div>
 
     <div class="form-group">
-      <label for="withdraw-amount">Sacar valor:</label>
+      <label for="withdraw-amount">Sacar moedas:</label><br>
       <input type="number" id="withdraw-amount" min="1" step="1" placeholder="R$ 50">
-      <button id="withdraw-btn">Sacar</button>
+      <br><button id="withdraw-btn">Sacar</button>
     </div>
 
     <div id="wallet-message"></div>
