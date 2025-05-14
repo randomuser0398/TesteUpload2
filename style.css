@@ -1,80 +1,112 @@
 body {
-  font-family: 'Press Start 2P', cursive;
-  background: url('https://i.imgur.com/oK2vHZJ.png') repeat;
-  color: #ffe9a6;
+  background-color: #001f2e;
+  color: #fff;
+  font-family: 'Press Start 2P', monospace;
+  text-align: center;
   padding: 20px;
+  margin: 0;
 }
 
 nav {
-  background: #3b1e08;
-  padding: 10px;
-  text-align: center;
-  border: 2px solid #d4af37;
-  border-radius: 8px;
+  margin-bottom: 20px;
 }
 
 nav a {
-  color: #ffe9a6;
+  color: #00ffc8;
+  margin: 0 10px;
   text-decoration: none;
-  margin: 0 15px;
-  font-size: 12px;
 }
 
 nav a:hover {
-  color: #d4af37;
+  text-decoration: underline;
 }
 
 h1 {
-  font-size: 16px;
-  margin-bottom: 15px;
-  color: #ffdb5c;
-  text-shadow: 2px 2px #000;
+  margin-top: 0;
+  font-size: 1rem;
 }
 
-.container, main {
-  background: rgba(20, 20, 20, 0.8);
-  border: 2px dashed #d4af37;
-  border-radius: 10px;
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  background: #003648;
   padding: 20px;
-  margin-top: 20px;
+  border-radius: 10px;
 }
 
-.slot-grid {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
+#saldo,
+#wallet-balance {
+  margin: 10px auto;
+  padding: 10px;
+  background-color: #002e3d;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  display: inline-block;
+}
+
+.form-group {
   margin: 20px 0;
 }
 
-.slot {
-  width: 64px;
-  height: 64px;
-  background-color: #1e1e1e;
-  border: 2px solid #d4af37;
-  font-size: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 4px;
+input[type="number"] {
+  padding: 8px;
+  font-family: 'Press Start 2P';
+  font-size: 0.7rem;
+  border-radius: 5px;
+  border: none;
+  background: #001f2e;
+  color: #fff;
+  width: 120px;
 }
 
 button {
-  background-color: #d4af37;
+  font-family: 'Press Start 2P';
+  font-size: 0.6rem;
+  padding: 10px 15px;
   border: none;
-  padding: 10px 20px;
-  font-family: 'Press Start 2P', cursive;
-  font-size: 10px;
-  color: #1e1e1e;
+  background-color: #00ffc8;
+  color: #003648;
+  border-radius: 8px;
   cursor: pointer;
   margin-top: 10px;
 }
 
 button:hover {
-  background-color: #ffd700;
-  color: #000;
+  background-color: #00dab3;
 }
 
-#saldo, #wallet-balance {
-  font-size: 14px;
-  margin: 10px 0;
+.slot-grid {
+  display: flex;
+  justify-content: center;
+  margin: 30px 0;
+  gap: 20px;
+}
+
+.slot {
+  font-size: 2.5rem;
+  background: #003648;
+  padding: 30px;
+  border: 2px solid #00ffc8;
+  border-radius: 10px;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.slot.win-animation {
+  animation: pulse 0.3s infinite alternate;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.2); }
+}
+
+footer {
+  margin-top: 30px;
+  font-size: 0.5rem;
+  opacity: 0.5;
 }
