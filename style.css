@@ -1,118 +1,38 @@
-/* Reset e base */
-body {
-  margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(to right, #1a1f36, #2e3c67);
-  color: #fff;
-  text-align: center;
-  min-height: 100vh;
-}
+/* Fonte bonita e base clean */ @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
 
-nav {
-  background-color: #0f172a;
-  padding: 10px;
-  font-size: 1rem;
-}
+body { font-family: 'Montserrat', sans-serif; background: linear-gradient(to bottom, #001f3f, #003366); color: #fff; margin: 0; padding: 0; min-height: 100vh; }
 
-nav a {
-  color: #38bdf8;
-  margin: 0 10px;
-  text-decoration: none;
-}
+nav { background-color: #002244; padding: 1rem; text-align: center; }
 
-nav a:hover {
-  color: #facc15;
-}
+nav a { color: #FFD700; text-decoration: none; margin: 0 1rem; font-weight: 600; }
 
-.container {
-  max-width: 500px;
-  margin: 40px auto;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 0 12px rgba(0,0,0,0.4);
-}
+h1 { text-align: center; margin-top: 1rem; font-size: 2rem; }
 
-/* Saldo */
-#saldo, #wallet-balance {
-  font-size: 1.3rem;
-  margin-bottom: 20px;
-  color: #f8fafc;
-}
+.container, main { max-width: 600px; margin: auto; padding: 2rem; background: rgba(0, 0, 0, 0.3); border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.6); }
 
-/* Slots */
-.slot-grid {
-  display: flex;
-  justify-content: center;
-  margin: 20px 0;
-  
-}
+input[type="number"] { padding: 0.5rem; font-size: 1rem; border-radius: 8px; border: 1px solid #ccc; width: 100%; box-sizing: border-box; margin-bottom: 1rem; }
 
-.slot {
-  font-size: 3rem;
-  margin: 0 10px;
-  background: #0f172a;
-  padding: 20px;
-  border-radius: 10px;
-  width: 70px;
-  height: 70px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+button { background-color: #FFD700; color: #000; padding: 0.6rem 1.2rem; border: none; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: background-color 0.3s; width: 100%; margin-bottom: 1rem; }
 
-/* Inputs e Botões */
-input[type="number"], input[type="text"] {
-  padding: 10px;
-  margin: 10px 0;
-  width: 80%;
-  border-radius: 8px;
-  border: none;
-  font-size: 1rem;
-  text-align: center;
-}
+button:hover { background-color: #FFC300; }
 
-button {
-  padding: 10px 20px;
-  background-color: #38bdf8;
-  border: none;
-  color: #0f172a;
-  font-weight: bold;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 10px;
-  transition: background 0.3s;
-}
+#saldo, #wallet-balance { text-align: center; font-size: 1.4rem; margin: 1rem 0; color: #00FF99; }
 
-button:hover {
-  background-color: #facc15;
-}
+.slot-grid { display: flex; justify-content: space-around; margin: 2rem 0; }
 
-/* Mensagens */
-#wallet-message, #mensagem-resultado {
-  margin-top: 15px;
-  font-size: 1rem;
-}
+.slot { font-size: 3rem; background-color: #111; padding: 1rem; border-radius: 12px; box-shadow: 0 0 12px #FFD700; transition: transform 0.3s; }
 
-/* Regras */
-ul {
-  text-align: left;
-  margin-top: 20px;
-  padding-left: 20px;
-}
+.win-animation { animation: pulse 1s infinite alternate; }
 
-li {
-  margin-bottom: 10px;
-}
-/* Animação de vitória */
-@keyframes piscar {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); }
-}
+@keyframes pulse { from { transform: scale(1); } to { transform: scale(1.2); } }
 
-.win-animation {
-  animation: piscar 0.6s ease-in-out 3;
-  background-color: rgba(255, 255, 0, 0.2);
-  border: 2px solid gold;
-}
+footer { text-align: center; padding: 1rem; background-color: #002244; color: #bbb; margin-top: 2rem; }
+
+@media (max-width: 600px) { .slot-grid { flex-direction: column; align-items: center; gap: 1rem; }
+
+nav a { display: inline-block; margin: 0.5rem; }
+
+button { font-size: 1rem; } }
+
+#mensagem-resultado, #wallet-message { text-align: center; font-weight: bold; margin-top: 1rem; color: #FFD700; }
+
