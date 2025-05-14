@@ -3,8 +3,103 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Cassino do Capitão</title>
+  <title>Cassino Pirata</title>
   <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #001f2e;
+      color: #fff;
+      font-family: 'Press Start 2P', monospace;
+      text-align: center;
+      padding: 20px;
+    }
+
+    nav a {
+      color: #fff;
+      margin: 0 10px;
+      text-decoration: none;
+    }
+
+    #saldo {
+      margin-top: 10px;
+      font-size: 0.8rem;
+      background-color: #003648;
+      padding: 10px;
+      display: inline-block;
+      border-radius: 5px;
+    }
+
+    .aposta-container {
+      margin: 20px 0;
+    }
+
+    input[type="number"] {
+      padding: 8px;
+      font-family: 'Press Start 2P';
+      font-size: 0.7rem;
+      border-radius: 5px;
+      border: none;
+      background: #002e3d;
+      color: #fff;
+      width: 100px;
+    }
+
+    .slot-grid {
+      display: flex;
+      justify-content: center;
+      margin: 30px 0;
+      gap: 20px;
+    }
+
+    .slot {
+      font-size: 2.5rem;
+      background: #003648;
+      padding: 30px;
+      border: 2px solid #00ffc8;
+      border-radius: 10px;
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s;
+    }
+
+    .slot.win-animation {
+      animation: pulse 0.3s infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.2); }
+    }
+
+    .acoes {
+      margin-top: 20px;
+    }
+
+    button {
+      font-family: 'Press Start 2P';
+      font-size: 0.6rem;
+      padding: 10px 20px;
+      border: none;
+      background-color: #00ffc8;
+      color: #003648;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #00dab3;
+    }
+
+    footer {
+      margin-top: 30px;
+      font-size: 0.5rem;
+      opacity: 0.5;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -13,31 +108,32 @@
       <a href="carteira.html">Carteira</a>
       <a href="regras.html">Regras</a>
     </nav>
-    <h1>Cassino do Capitão</h1>
+    <h1>Cassino Pirata</h1>
     <div id="saldo">Saldo: R$ 0,00</div>
   </header>
 
   <main>
     <section class="aposta-container">
-      <label for="valor-aposta">Valor da aposta:</label>
+      <label for="valor-aposta">Aposta:</label>
       <input type="number" id="valor-aposta" min="1" max="100" value="10" />
     </section>
 
     <section class="slot-grid">
-      <div class="slot" id="reel1">🍒</div>
-      <div class="slot" id="reel2">⭐️</div>
-      <div class="slot" id="reel3">💎</div>
+      <div class="slot" id="reel1">☠️</div>
+      <div class="slot" id="reel2">⚓</div>
+      <div class="slot" id="reel3">🪙</div>
     </section>
 
     <section class="acoes">
       <button id="girar-btn">GIRAR</button>
+      <div id="mensagem-resultado"></div>
     </section>
   </main>
 
   <footer>
-    <p>&copy; 2025 Cassino do Capitão</p>
+    <p>&copy; 2025 Cassino Pirata</p>
   </footer>
 
   <script src="script.js"></script>
 </body>
-</html>
+        </html>
